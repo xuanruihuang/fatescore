@@ -74,6 +74,9 @@ def macro(a, js=None):
 
 
 present = [b for b in METHODS if os.path.exists(os.path.join(FD, b + ".npy"))]
+for b in METHODS:
+    if b not in present:  # e.g. the steady-state velocity kernel: its ladder run kept two-fate shares only
+        print("not scored (no %s.npy with all terminal states): %s" % (b, METHODS[b]))
 P = {b: clone_probs(b) for b in present + CONN}
 rng = np.random.default_rng(97)
 n = len(yc)

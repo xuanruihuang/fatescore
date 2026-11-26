@@ -466,6 +466,12 @@ s_readout () {
   $PY -s "$CODE/116_readout_check.py" "$OUT" "$OUT/readout_check.csv"
 }
 
+# Section 3.2: bootstrap p-values of the 48 gains and Holm's correction over them (118).
+s_multiplicity () {
+  OMP_NUM_THREADS=1 $PY -s "$CODE/118_multiplicity.py" "$FALL" "$LAB" "$FCTM" "$FCTR" \
+    "$OUT/calibrated_table.csv" "$OUT/multiplicity118.csv"
+}
+
 # Appendix C: six fates on LARRY, macro one-versus-rest AUROC (117).
 s_multifate () {
   OMP_NUM_THREADS=1 $PY -s "$CODE/117_multifate.py" "$FALL" "$LAB" "$OUT/multifate117_larry.csv"
@@ -503,6 +509,7 @@ run_stage SIMULATION       "simulated positive control (98)"                    
 run_stage TABLE_GAIN       "gain over the kernel, three data sets (99)"           s_table_gain
 run_stage FIG2             "Figure 3 (99b)"                                       s_fig2
 run_stage RESOLUTION       "minimum detectable differences (102)"                 s_resolution
+run_stage MULTIPLICITY     "Holm correction over the 48 gains (118)"              s_multiplicity
 run_stage FIG3             "Figure 5 (103)"                                       s_fig3
 run_stage INCREMENT        "increment over the kernel (104, 104b)"                s_increment
 run_stage BRIER            "Brier score, raw and recalibrated (109)"              s_brier

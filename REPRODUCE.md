@@ -102,6 +102,7 @@ by hand from the listed files; no script writes the LaTeX.
 | Sec. 3.2, App. C | read-out: none of 27 learned-model pairs above the walk on fully reached clones | READOUT | `out/readout_check.csv` |
 | Sec. 6, App. E | full labelling reference: five of six comparisons separate; organoid gene space does not | LABELLING (+ organoid TODO) | `out/labelling_{hsc,rpe1}.csv`, rows with reference `labelling`; organoid from `out/labelling_organoid.csv` (not yet produced by the script) |
 | Abstract, Contributions, Sec. 3.2, App. C | six fates on LARRY (771 clones): walk 0.893 (0.879-0.903); learned models -0.13 to -0.22; StationaryOT +0.012 [0.003, 0.024], p 0.001, Holm 0.009, above 12 of 18 settings; megakaryocytes +0.060 [0.010, 0.126]; four fates with >= 30 clones +0.003 | MULTIFATE | `out/multifate117_larry.csv`, `out/multifate117_larry_perfate.csv`, `logs/MULTIFATE.log` |
+| Sec. 3.2 | Holm correction over the 48 gains: 28 below, 20 not separated, 0 above (per-pair 95%: 36 / 12 / 0) | MULTIPLICITY | `out/multiplicity118.csv` (`p`, `p_holm`, `separated_holm`); the script first reproduces every interval of `out/calibrated_table.csv` |
 | App. C | scoring tool (kernel, band, gain, MDD, increment) | TOOL_CHECK | `tool/tests/test_core.py`; reproduces the LARRY StationaryOT gain -0.011 (-0.023 to 0.002) and increment 0.001 |
 
 CoSpar (stage COSPAR), USB and PACE (stage USB_PACE) are scored in the paper and run before PACE_PICK and SCORE, in the
