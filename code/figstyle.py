@@ -1,4 +1,4 @@
-"""One visual system for every figure of the ICML paper (notes/velocity_fate_figure_guide.md).
+"""One visual system for every figure of the paper.
 
 Colour means method family only, in three muted hues (slate, clay, celadon) chosen for colour-blind
 distance; everything else is ink and greys. The walk without direction is the reference, drawn as a

@@ -1,7 +1,6 @@
 """What sign agreement is worth, and a coarse maturation proxy worth comparing to.
 
-Two things this answers, both registered before it ran
-(notes/velocity_fate_extension_log.md section 14).
+Two things this answers, both fixed before it ran.
 
 Sign agreement between a field's component along an axis and the clonal
 advance's component along the same axis has a chance level set by the margin,

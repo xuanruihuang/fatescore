@@ -105,12 +105,10 @@ need () {  # need <path> <where to get it>
     exit 1
   fi
 }
-# The install scripts in code/ still carry the compute server's root and its local proxy; until
-# the anonymization edit (REPRODUCE.md) replaces them, run them with the root rewritten to
-# ROOT and the proxy exports dropped. After the edit this rewrite is a no-op.
+# Run an install script from code/ (any proxy exports dropped).
 portable () {
   mkdir -p "$ROOT/ext/tmp"
-  sed -e "s#$ROOT#$ROOT#g" -e '/_proxy=/d' "$1" | (cd "$CODE" && sh -s)
+  sed -e '/_proxy=/d' "$1" | (cd "$CODE" && sh -s)
 }
 run_stage () {  # run_stage <NAME> <description> <function> [optional]
   local name=$1 desc=$2 fn=$3 opt=${4:-}

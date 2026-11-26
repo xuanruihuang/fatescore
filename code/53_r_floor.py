@@ -8,7 +8,7 @@ difference at which the r test reaches 80% power, not an r difference. At the
 working point used for Chreode (A0 = 0.75, baseline r about 0.46) an AUROC
 difference corresponds to an r difference about 1.8 times as large, so every
 "r floor" taken from that column was too small by about that factor. Found on
-2026-11-23 while writing the Chinese text; see notes/velocity_fate_extension_log.md.
+2026-11-23 while revising the text.
 
 What this script reports instead, per noise correlation rho:
   - the median half-width of the 95% paired-bootstrap interval of the r

@@ -14,8 +14,7 @@ axes fitted in the embedding the way the manuscript fits them in feature space:
 undifferentiated against mature among day-2 cells, day-2 against the later days,
 and neutrophil-fated against monocyte-fated clones.
 
-The decision rules and the k values were registered before this was run; see
-notes/velocity_fate_extension_log.md section 12.4.
+The decision rules and the k values were fixed before this was run.
 
 Usage:
   python 39_sampling_day_field.py <h5ad> <featdir> <labels.tsv> <out_prefix>

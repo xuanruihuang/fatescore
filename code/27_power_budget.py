@@ -10,7 +10,7 @@ so it is computable from the GEO metadata and clone matrix, with no splicing
 layer and no expression data at all.
 
 The generative model, the grid and the decision rules were fixed before any
-number here was computed: notes/velocity_fate_power_prereg.md.
+number here was computed.
 
 Usage:
   python 27_power_budget.py <spec.json> <out_prefix> [--workers 8]

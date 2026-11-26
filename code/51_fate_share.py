@@ -8,7 +8,7 @@ Scored on a two-fate task, eight of those columns are about other decisions,
 and several are nearly constant: StandardScaler in cvlib.build then stretches a
 handful of cells far out along them. Two of the methods lost more when their
 ten columns were added to the expression block than ten columns of pure noise
-cost (notes/velocity_fate_extension_log.md, section 17.18). This writes the
+cost. This writes the
 quantity each method actually predicts for the task -- the probability of the
 positive fate among the two, p_pos / (p_pos + p_neg) -- as nm_<block>.npy, so
 the increment can be rerun with the method's output in its most direct form.

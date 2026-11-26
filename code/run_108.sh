@@ -1,5 +1,5 @@
 #!/bin/sh
-# Preliminary checks after an LLM review: terminal-state sensitivity (108_terminal_alt.py, in
+# Preliminary checks after review: terminal-state sensitivity (108_terminal_alt.py, in
 # env_gpcca for the GPCCA step) and the trifurcation/growth simulation (108_mechanism_multi.py).
 # Run from code/. Two independent chains; each writes its log and a .done marker.
 cd "$(dirname "$0")"

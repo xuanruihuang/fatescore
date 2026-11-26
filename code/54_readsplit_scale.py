@@ -9,7 +9,7 @@ part is taken from the first, which is the model's base: the base AUROC falls
 from 0.849 (one depth) to 0.835, 0.761 and 0.646, while base plus complement is
 always the full spliced counts. The "increment" at each depth is mostly the
 base getting weaker, so it is not a scale for what an added block is worth.
-Found by a reader of the Chinese draft on 2026-11-23.
+Found by a reader of the draft on 2026-11-23.
 
 What this does instead. Each cell's spliced counts on the selected genes are
 split three ways by multivariate hypergeometric sampling: c1 with exactly the

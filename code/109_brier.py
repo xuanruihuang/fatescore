@@ -1,4 +1,4 @@
-"""Brier score of each method against the connectivity kernel (an LLM reviewer asked whether a
+"""Brier score of each method against the connectivity kernel (a reviewer asked whether a
 calibration-sensitive score changes the conclusion).
 
 Clone-level predictions as in 97/99/104. Two versions: the raw predicted share (clipped to [0, 1]),
