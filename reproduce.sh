@@ -429,10 +429,53 @@ s_tool_check () {
   (cd "$ROOT/tool" && PYTHONPATH="$ROOT/tool" $PY -s tests/test_core.py)
 }
 
-# The three figure files main.tex includes (icml/figures/).
+# Figure 4: where the score comes from (115); classifier rows from LARRY_EXPR_REF's outputs.
+s_fig_source () {
+  need "$OUT/ev_d2_bootstrap.csv" "stage LARRY_EXPR_REF"
+  $PY -s "$CODE/115_fig_source.py" "$OUT/ev_d2" "$FD2" "$FALL" "$LAB" "$OUT/calibrated_table.csv" \
+    "$OUT/fig_source.pdf"
+}
+
+# Figure 6: held-out time point against the gain over the walk (114).
+s_fig_heldout () {
+  need "$OUT/heldout/summary_110.csv" "stages HELDOUT_LEARNED and USB_PACE"
+  $PY -s "$CODE/114_fig_heldout_fate.py" "$OUT/calibrated_table.csv" "$OUT/heldout/summary_110.csv" \
+    "$OUT/fig_heldout_fate.pdf"
+}
+
+# Appendix C: six terminal-state definitions (needs env_gpcca, code/86b_env_gpcca.sh) and the
+# trifurcation and growth simulation (108).
+s_terminal_sim () {
+  need "$ROOT/env_gpcca/bin/python" "code/86b_env_gpcca.sh"
+  sh "$CODE/run_108.sh"
+}
+
+# Appendix C: the walk plus a little direction, LARRY and haematopoiesis (111).
+s_mix () {
+  GPU=$GPU sh "$CODE/run_111.sh"
+  sh "$CODE/run_111_ctm.sh"
+}
+
+# Appendix C: clones whose present state leaves fate open (112).
+s_hard_cells () {
+  sh "$CODE/run_112.sh"
+}
+
+# Appendix C: learned models rescored on clones whose cells all reach a scored fate (116).
+s_readout () {
+  $PY -s "$CODE/116_readout_check.py" "$OUT" "$OUT/readout_check.csv"
+}
+
+# Appendix C: six fates on LARRY, macro one-versus-rest AUROC (117).
+s_multifate () {
+  OMP_NUM_THREADS=1 $PY -s "$CODE/117_multifate.py" "$FALL" "$LAB" "$OUT/multifate117_larry.csv"
+}
+
+# The six figure files main.tex includes (icml/figures/).
 s_figures_copy () {
   mkdir -p "$ROOT/icml/figures"
-  cp "$OUT/fig_concept.pdf" "$OUT/fig_published.pdf" "$OUT/fig_gain.pdf" "$OUT/fig_mechanism.pdf" "$ROOT/icml/figures/"
+  cp "$OUT/fig_concept.pdf" "$OUT/fig_published.pdf" "$OUT/fig_gain.pdf" "$OUT/fig_source.pdf" \
+    "$OUT/fig_mechanism.pdf" "$OUT/fig_heldout_fate.pdf" "$ROOT/icml/figures/"
 }
 
 # ---------------------------------------------------------------------------------------------
@@ -455,19 +498,26 @@ run_stage USB_PACE         "USB and PACE (110)"                                 
 run_stage PACE_PICK        "PACE preset chosen by fit (110b)"                     s_pace_pick
 run_stage SCORE            "fate shares (51) and CellTag-multi scores (97)"       s_score
 run_stage PUBLISHED_TEST   "published 335-cell LARRY test set (101)"              s_published_test
-run_stage FIG1             "Figure 1 (101b)"                                      s_fig1
+run_stage FIG1             "Figure 2 (101b)"                                      s_fig1
 run_stage SIMULATION       "simulated positive control (98)"                      s_simulation
 run_stage TABLE_GAIN       "gain over the kernel, three data sets (99)"           s_table_gain
-run_stage FIG2             "Figure 2 (99b)"                                       s_fig2
+run_stage FIG2             "Figure 3 (99b)"                                       s_fig2
 run_stage RESOLUTION       "minimum detectable differences (102)"                 s_resolution
-run_stage FIG3             "Figure 3 (103)"                                       s_fig3
+run_stage FIG3             "Figure 5 (103)"                                       s_fig3
 run_stage INCREMENT        "increment over the kernel (104, 104b)"                s_increment
 run_stage BRIER            "Brier score, raw and recalibrated (109)"              s_brier
-run_stage FIG_CONCEPT      "page-one figure (113)"                                s_fig_concept
+run_stage FIG_CONCEPT      "Figure 1 (113)"                                       s_fig_concept
+run_stage FIG_SOURCE       "Figure 4 (115)"                                       s_fig_source
+run_stage READOUT          "learned models on fully reached clones (116)"         s_readout
+run_stage MULTIFATE        "six fates on LARRY (117)"                             s_multifate
+run_stage TERMINAL_SIM     "terminal states; trifurcation and growth (108)"       s_terminal_sim
+run_stage MIX              "the walk plus a little direction (111)"               s_mix
+run_stage HARD_CELLS       "clones whose state leaves fate open (112)"            s_hard_cells
 run_stage PRESCIENT_REPRO  "PRESCIENT reproduction, Appendix A (105)"             s_prescient_repro optional
 run_stage LABELLING        "metabolic labelling and cell cycle (91)"              s_labelling
 run_stage HELDOUT          "held-out time point (90)"                             s_heldout
 run_stage HELDOUT_LEARNED  "held-out time point, learned models (106)"            s_heldout_learned
+run_stage FIG_HELDOUT      "Figure 6 (114)"                                       s_fig_heldout
 run_stage TOOL_CHECK       "scoring tool self-check"                              s_tool_check
 run_stage FIGURES_COPY     "figures into icml/figures"                            s_figures_copy
 echo "done; results in $OUT, logs in $LOG, figures in $ROOT/icml/figures"

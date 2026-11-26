@@ -7,7 +7,7 @@ interval as stored); the walk without direction with the graph built from day-2 
 reference setting n30 p30 d1, bar over the settings; every method in calibrated_table.csv (99) as one
 dot each.
 
-Usage: 115_fig_source.py <main_table.csv> <feat_d2> <feat_all> <d2_labels.tsv> <calibrated_table.csv> <out.pdf>
+Usage: 115_fig_source.py <main_table.csv | ev_d2 prefix> <feat_d2> <feat_all> <d2_labels.tsv> <calibrated_table.csv> <out.pdf>
 """
 import glob
 import json
@@ -59,8 +59,12 @@ def kernel(fd):
     return vals["cr_conn_n30_p30_d1"], min(vals.values()), max(vals.values()), len(vals)
 
 
-MT = pd.read_csv(MAIN)
-MT = MT[MT.graph == "d2"].set_index("arm")
+if MAIN.endswith(".csv"):  # main_table.csv of the first pipeline (09_figures.py)
+    MT = pd.read_csv(MAIN)
+    MT = MT[MT.graph == "d2"].set_index("arm")
+else:  # the same numbers straight from 03_evaluate.py (<prefix>_summary.csv, <prefix>_bootstrap.csv)
+    MT = pd.read_csv(MAIN + "_summary.csv").set_index("arm").rename(columns={"auroc_mean": "auroc"})
+    MT = MT.join(pd.read_csv(MAIN + "_bootstrap.csv").set_index("arm")[["lo", "hi"]])
 k2 = kernel(FD2)
 ka = kernel(FALL)
 C = pd.read_csv(TAB)

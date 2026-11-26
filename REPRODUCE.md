@@ -32,7 +32,9 @@ by hand from the listed files; no script writes the LaTeX.
 | Figure 1 (`fig:concept`), page one | TABLE_GAIN, FIG2, FIG_CONCEPT | `113_fig_concept.py` | `out/fig_concept.pdf` (panel c from `out/calibrated_table.csv`, band from `out/fig_gain_band.txt`; panels a, b schematic, fixed seed) |
 | Figure 2 (`fig:published`), published LARRY test set | PUBLISHED_TEST, FIG1 | `101_weinreb_test_set.py`, `101b_fig_published.py` | `out/fig_published.pdf` (from `out/weinreb_test_scores.csv`); open markers are the published PRESCIENT values, hard-coded in `101b` (`PRESCIENT_PUB`, Yeo et al. 2021) |
 | Figure 3 (`fig:gain`), gain over the kernel | COSPAR, USB_PACE, PACE_PICK, SCORE, SIMULATION, TABLE_GAIN, FIG2 | `51`, `97`, `98`, `99_calibrated_table.py`, `99b_fig_gain.py` | `out/fig_gain.pdf` (from `out/calibrated_table.csv`, band from `out/mechanism_sim.csv`; band printed to `out/fig_gain_band.txt`) |
-| Figure 4 (`fig:mechanism`), simulated positive control | SIMULATION, RESOLUTION, FIG3 | `98_mechanism_sim.py` (three grids), `102_resolution.py`, `103_fig_mechanism.py` | `out/fig_mechanism.pdf` (from `out/mechanism_sim.csv`, `mechanism_sim_noise.csv`, `mechanism_sim_wrong.csv`, `resolution.csv`) |
+| Figure 4 (`fig:source`), where the score comes from | LARRY_EXPR_REF, LARRY_KERNELS, TABLE_GAIN, FIG_SOURCE | `03_evaluate.py`, `29_expression_kernel.py`, `115_fig_source.py` | `out/fig_source.pdf` (classifier rows from `out/ev_d2_summary.csv` and `ev_d2_bootstrap.csv`; walk from `out/feat_d2`, `out/feat_all`; methods from `out/calibrated_table.csv`) |
+| Figure 5 (`fig:mechanism`), simulated positive control | SIMULATION, RESOLUTION, FIG3 | `98_mechanism_sim.py` (three grids), `102_resolution.py`, `103_fig_mechanism.py` | `out/fig_mechanism.pdf` (from `out/mechanism_sim.csv`, `mechanism_sim_noise.csv`, `mechanism_sim_wrong.csv`, `resolution.csv`) |
+| Figure 6 (`fig:heldout`), held-out time point against fate | HELDOUT_LEARNED, USB_PACE, TABLE_GAIN, FIG_HELDOUT | `106_heldout_summary.py`, `114_fig_heldout_fate.py` | `out/fig_heldout_fate.pdf` (from `out/heldout/summary_110.csv` and `out/calibrated_table.csv`) |
 
 ### Tables
 
@@ -93,6 +95,13 @@ by hand from the listed files; no script writes the LaTeX.
 | App. A (iii) | full data 0.082 +- 0.019 / 0.159 +- 0.017; KEGG on our object 0.174 +- 0.016; main-task gains -0.06 to -0.16; 40% reach neither fate | PRESCIENT_REPRO | `out/prescient_check/full_{none,kegg}_s*/result_full_*_seed*.json`, `repro_kegg_s*/result_kegg_seed*.json`, `logs/PRESCIENT_REPRO.log`; mean +- SD over seeds computed from the per-seed files (no aggregation script) |
 | App. A, version items | torch 2.8 / CUDA 12.8 environment; MIOFlow 1c6ceb4; PI-SDE on GPU | STB_INSTALL | `code/install_sctimebench.sh`, `code/install_mioflow_old.sh`; `ext/env_stb_freeze.txt` |
 | Sec. 3.2, App. C | recalibrated Brier: no method below the kernel in 48 pairs (24 above, 24 not separated) | BRIER | `out/brier.csv` (`better_cal`; rows `kernel, other setting` are sanity rows) |
+| App. C | six terminal-state definitions: walk 0.78-0.82, velocity kernel below under every definition | TERMINAL_SIM | `out/terminal_states_alt.csv` |
+| App. C | trifurcation: true dynamics add +0.06 to +0.12; growth changes gains by <= 0.001; shuffled +0.01 to +0.02 | TERMINAL_SIM | `out/mechanism_multi.csv`, `out/mechanism_multi_noise.csv` |
+| App. C | clones whose present state leaves fate open (thirds of the classifier margin) | HARD_CELLS | `out/hard_cells_{larry,ctm,ctr}.csv` |
+| App. C | the walk plus a little direction: split-validated gains, real-time kernel +0.018 [0.002, 0.033] | MIX | `out/mix111_scores.csv`, `out/mix111_ctm_scores.csv` |
+| Sec. 3.2, App. C | read-out: none of 27 learned-model pairs above the walk on fully reached clones | READOUT | `out/readout_check.csv` |
+| Sec. 6, App. E | full labelling reference: five of six comparisons separate; organoid gene space does not | LABELLING (+ organoid TODO) | `out/labelling_{hsc,rpe1}.csv`, rows with reference `labelling`; organoid from `out/labelling_organoid.csv` (not yet produced by the script) |
+| Abstract, Contributions, Sec. 3.2, App. C | six fates on LARRY (771 clones): walk 0.893 (0.879-0.903); learned models -0.13 to -0.22; StationaryOT +0.012 [0.003, 0.024], p 0.001, Holm 0.009, above 12 of 18 settings; megakaryocytes +0.060 [0.010, 0.126]; four fates with >= 30 clones +0.003 | MULTIFATE | `out/multifate117_larry.csv`, `out/multifate117_larry_perfate.csv`, `logs/MULTIFATE.log` |
 | App. C | scoring tool (kernel, band, gain, MDD, increment) | TOOL_CHECK | `tool/tests/test_core.py`; reproduces the LARRY StationaryOT gain -0.011 (-0.023 to 0.002) and increment 0.001 |
 
 CoSpar (stage COSPAR), USB and PACE (stage USB_PACE) are scored in the paper and run before PACE_PICK and SCORE, in the
