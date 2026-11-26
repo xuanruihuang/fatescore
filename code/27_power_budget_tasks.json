@@ -1,0 +1,35 @@
+[
+  {
+    "name": "T1_invitro_neu_vs_mono",
+    "meta": "data/larry_invivo_meta/GSM4185642_stateFate_inVitro_metadata.txt.gz",
+    "clones": "data/larry_invivo_meta/GSM4185642_stateFate_inVitro_clone_matrix.mtx.gz",
+    "early": "2.0",
+    "mature": ["Neutrophil", "Monocyte", "Baso", "Mast", "Meg", "Erythroid",
+               "Lymphoid", "Eos", "Ccr7_DC", "pDC"],
+    "positive": "Neutrophil",
+    "negative": "Monocyte",
+    "tie_to_positive": true,
+    "pool": true
+  },
+  {
+    "name": "T2_cytokine_neu_vs_mo",
+    "meta": "data/larry_invivo_meta/GSM4185644_stateFate_cytokinePerturbation_metadata.txt.gz",
+    "clones": "data/larry_invivo_meta/GSM4185644_stateFate_cytokinePerturbation_clone_matrix.mtx.gz",
+    "early": "2",
+    "mature": ["Neu", "Mo", "Ba", "Ma", "Mk", "Er", "Eos", "cDC", "pDC1", "pDC2"],
+    "positive": "Neu",
+    "negative": "Mo",
+    "tie_to_positive": true,
+    "pool": true
+  },
+  {
+    "name": "T3_invivo_ery_majority",
+    "meta": "data/larry_invivo_meta/GSM4185643_stateFate_inVivo_metadata.txt.gz",
+    "clones": "data/larry_invivo_meta/GSM4185643_stateFate_inVivo_clone_matrix.mtx.gz",
+    "early": "2",
+    "mature": ["Neu", "Mono", "Baso", "Ery", "B", "T", "NK", "DC"],
+    "positive": "Ery",
+    "tie_to_positive": false,
+    "pool": false
+  }
+]
