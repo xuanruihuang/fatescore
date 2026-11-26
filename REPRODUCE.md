@@ -45,7 +45,7 @@ by hand from the listed files; no script writes the LaTeX.
 | Table 1: methods and data sets | - | text |
 | Table 2 (`tab:ladder`), clonal fate row (0.785, 0.776, 0.739, 0.810) | LADDER | `out/ladder_fate.csv`, column `auroc_clone`, rows `nm_cr_lad_velocity_dyn`, `nm_cr_lad_shuffled`, `nm_cr_lad_degradation`, `nm_cr_lad_connectivity` |
 | Table 2, labelling haem. and RPE1 rows; cell-cycle row | LABELLING | `out/labelling_hsc.csv`, `out/labelling_rpe1.csv` (reference `production`, gene space; cell cycle: reference `cycle`) |
-| Table 2, labelling organoid row | TODO | not reproduced by the script (see TODOs) |
+| Table 2, labelling organoid row | LABELLING | `out/labelling_organoid.csv` (reference `production`, gene space) |
 | Table 3 (`tab:heldout`), USB and PACE rows | USB_PACE | `out/heldout/summary_110.csv` |
 | Table 3 (`tab:heldout`), learned models and references | HELDOUT_LEARNED | `out/heldout/summary.csv` (`gap_closed_mean/min/max` x 100; reference rows `ot` = exact OT interpolation, `last` = last day alone); per-seed inputs `out/heldout/{larry,ctr}_*.csv` |
 | Table 4 (`tab:fit`), flow matching | FLOW_MATCHING | `out/feat_{all,ctm,ctr}/snap_{otcfm,sbcfm}_g50k_log.json` and `logs/FLOW_MATCHING.log` (fit per seed, floor, no movement) |
@@ -53,7 +53,7 @@ by hand from the listed files; no script writes the LaTeX.
 | Table 4, USB and PACE | USB_PACE | `out/feat_{all,ctm,ctr}/snap_usb_run_log.json`, `snap_pace_run_log.json`, `snap_pace_ipsc_run_log.json` (`fit`, `fit_reference`); PACE row is the preset kept by PACE_PICK |
 | Table 4 note: scIMF at 1,000 epochs (16.4) | TODO | variant arguments not recorded |
 | Table 5 (`tab:labelling`), haem. and RPE1 rows | LABELLING | `out/labelling_hsc.csv`, `out/labelling_rpe1.csv` (best velocity, best field without dynamics, paired difference with bootstrap interval) |
-| Table 5, organoid rows | TODO | not reproduced by the script |
+| Table 5, organoid rows | LABELLING | `out/labelling_organoid.csv` (best velocity, best field without dynamics, paired difference) |
 
 ### In-text results
 
@@ -84,12 +84,12 @@ by hand from the listed files; no script writes the LaTeX.
 | Sec. 5 | random error erodes the gain towards zero; shuffled velocity at or above the kernel | SIMULATION | `out/mechanism_sim_noise.csv` |
 | Sec. 5 | uniform decay only shrinks the gain; delta = -0.5 gives -0.02 to -0.05 | SIMULATION | `out/mechanism_sim_wrong.csv` |
 | Sec. 5 | 36 pairs below, by up to 0.21 | TABLE_GAIN | `out/calibrated_table.csv` |
-| Sec. 6 | labelling: six of six comparisons separate | LABELLING (+ organoid TODO) | `out/labelling_{hsc,rpe1}.csv` |
+| Sec. 6 | labelling: six of six comparisons separate | LABELLING | `out/labelling_{hsc,rpe1,organoid}.csv` |
 | Sec. 6 | cell cycle 0.439 vs neighbour average 0.263 | LABELLING | `out/labelling_rpe1.csv` (reference `cycle`) |
 | Sec. 6 | scNODE, OT-CFM, SB-CFM, USB close 29-35% on LARRY; exact OT 29%; PI-SDE 14% on reprog.; PACE below independent pairing | HELDOUT_LEARNED, USB_PACE | `out/heldout/summary.csv`, `out/heldout/summary_110.csv` |
 | Sec. 6 | Waddington-OT's interpolation closes 59-81% (LARRY), 9-12% (reprog.) | HELDOUT | `out/ot_interpolation.csv`, `out/ot_interpolation_ctr.csv`; share = (R - I) / (R - P) from Waddington-OT's validation summary (names R, I, P), per seed; no script in `code/` writes the range (`93_ladder.py` applies the formula to LARRY only and reads preprint outputs) |
 | App. A | StationaryOT reprog. tolerance reached 3.0e-5 vs 5.6e-5 | OT_ARMS | `out/feat_ctr/snap_statot_log.json` |
-| App. A, App. D | full labelling reference has cosine 0.48 with its own decay term; organoid gene space 0.092 vs 0.114 | TODO (organoid) | not reproduced by the script |
+| App. A, App. E | full labelling reference has cosine 0.48 with its own decay term (organoid); organoid gene space 0.092 vs 0.114 | LABELLING | `out/labelling_organoid.csv` (rows with reference `labelling`) |
 | App. A (i) | our first PRESCIENT run with the published read-out: r 0.06 | PRESCIENT_REPRO | `out/prescient_check/resim_none.npz`, `logs/PRESCIENT_REPRO.log` |
 | App. A (ii) | published LARRY settings, no weights: 0.054 +- 0.010 | PRESCIENT_REPRO | `out/prescient_check/repro_none_s*/result_none_seed*.json` |
 | App. A (iii) | full data 0.082 +- 0.019 / 0.159 +- 0.017; KEGG on our object 0.174 +- 0.016; main-task gains -0.06 to -0.16; 40% reach neither fate | PRESCIENT_REPRO | `out/prescient_check/full_{none,kegg}_s*/result_full_*_seed*.json`, `repro_kegg_s*/result_kegg_seed*.json`, `logs/PRESCIENT_REPRO.log`; mean +- SD over seeds computed from the per-seed files (no aggregation script) |
@@ -100,9 +100,10 @@ by hand from the listed files; no script writes the LaTeX.
 | App. C | clones whose present state leaves fate open (thirds of the classifier margin) | HARD_CELLS | `out/hard_cells_{larry,ctm,ctr}.csv` |
 | App. C | the walk plus a little direction: split-validated gains, real-time kernel +0.018 [0.002, 0.033] | MIX | `out/mix111_scores.csv`, `out/mix111_ctm_scores.csv` |
 | Sec. 3.2, App. C | read-out: none of 27 learned-model pairs above the walk on fully reached clones | READOUT | `out/readout_check.csv` |
-| Sec. 6, App. E | full labelling reference: five of six comparisons separate; organoid gene space does not | LABELLING (+ organoid TODO) | `out/labelling_{hsc,rpe1}.csv`, rows with reference `labelling`; organoid from `out/labelling_organoid.csv` (not yet produced by the script) |
+| Sec. 6, App. E | full labelling reference: five of six comparisons separate; organoid gene space does not | LABELLING | `out/labelling_{hsc,rpe1,organoid}.csv`, rows with reference `labelling` |
 | Abstract, Contributions, Sec. 3.2, App. C | six fates on LARRY (771 clones): walk 0.893 (0.879-0.903); learned models -0.13 to -0.22; StationaryOT +0.012 [0.003, 0.024], p 0.001, Holm 0.009, above 12 of 18 settings; megakaryocytes +0.060 [0.010, 0.126]; four fates with >= 30 clones +0.003 | MULTIFATE | `out/multifate117_larry.csv`, `out/multifate117_larry_perfate.csv`, `logs/MULTIFATE.log` |
 | Sec. 3.2 | Holm correction over the 48 gains: 28 below, 20 not separated, 0 above (per-pair 95%: 36 / 12 / 0) | MULTIPLICITY | `out/multiplicity118.csv` (`p`, `p_holm`, `separated_holm`); the script first reproduces every interval of `out/calibrated_table.csv` |
+| Contributions, Sec. 5, App. C | learned-model pipeline on simulated snapshots: bifurcation OT-CFM -0.04 to -0.07 below the walk, classifier level with it; loop walk 0.46-0.50, OT-CFM +0.12 / +0.19 | LEARNED_CONTROL | `out/learned_control119.csv` (one row per geometry, priming, delta, seed) |
 | App. C | scoring tool (kernel, band, gain, MDD, increment) | TOOL_CHECK | `tool/tests/test_core.py`; reproduces the LARRY StationaryOT gain -0.011 (-0.023 to 0.002) and increment 0.001 |
 
 CoSpar (stage COSPAR), USB and PACE (stage USB_PACE) are scored in the paper and run before PACE_PICK and SCORE, in the
@@ -144,11 +145,9 @@ live ones (largest difference 1.6e-8). Method-training stages were not rerun.
 
 Written as commented TODOs in `reproduce.sh` (arguments not recoverable from docstrings or
 `README.md`):
-- `91_labelling_velocity.py` on the scEU-seq intestinal organoid (Table 2 row, Table 5 rows 5-6,
-  the 0.48 / 0.092 vs 0.114 statements): input file and arguments not recorded.
 - `100_sctimebench_fate.py` scIMF 1,000-epoch variant (Table 4 note): `--set`/`--tag` not recorded.
 - Input preparation not scripted in `code/`: `data/labelling/{hsc_small,hsc_published_velocity,
-  rpe1_small}.h5ad` (from dynamo's sample data); `data/kegg/*.csv` (KEGG REST mmu04110, mmu04210).
+  rpe1_small,organoid_small}.h5ad` (from dynamo's sample data); `data/kegg/*.csv` (KEGG REST mmu04110, mmu04210).
 
 Commands written from the scripts' documented usage and defaults, because the exact call was not
 recorded: `41_ot_fate.py --method statot|wot|moscot` (script defaults) on all three data sets;

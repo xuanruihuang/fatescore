@@ -50,7 +50,8 @@
 #  7. data/labelling/ -- metabolic labelling (dynamo sample data, Qiu et al. 2022; scEU-seq,
 #     Battich et al. 2020): hsc_small.h5ad (spliced/unspliced/labelling counts of
 #     `hematopoiesis_raw`), hsc_published_velocity.h5ad (layer velocity_alpha_minus_gamma_s of
-#     `hematopoiesis`, with time_<t>_gamma and X_umap), rpe1_small.h5ad (scEU-seq RPE1). The
+#     `hematopoiesis`, with time_<t>_gamma and X_umap), rpe1_small.h5ad (scEU-seq RPE1),
+#     organoid_small.h5ad (scEU-seq intestinal organoid, with rotated_umap1/2). The
 #     extraction into these files is not scripted in code/ (TODO). Organoid input: not recorded.
 #     Presence checked only.
 #  8. data/kegg/mm_birth_kegg_mmu04110.csv, mm_death_kegg_mmu04210.csv -- KEGG REST gene lists
@@ -351,9 +352,11 @@ s_labelling () {
   mt $DYN_PY "$CODE/91_labelling_velocity.py" "$L/rpe1_small.h5ad" "$OUT/labelling_rpe1" --recipe kin_tutorial --exp kin \
     --time-scale 60 --cycle-key Cell_cycle_relativePos --gene-map "$L/rpe1_gene_symbols.tsv" \
     --embed-cols RFP_log10_corrected,GFP_log10_corrected
-  # TODO 91_labelling_velocity.py, scEU-seq intestinal organoid (Table 2 row "Labelling, organoid",
-  # Table 5 rows 5-6): --recipe organoid_tutorial exists, but the input file and the remaining
-  # arguments (tkey, gene map, embedding) are not recorded.
+  # scEU-seq intestinal organoid (Table 2 row "Labelling, organoid", Table 5 rows 5-6); the call
+  # recorded in the run script of 2026-11-25
+  need "$L/organoid_small.h5ad" "dynamo sample data scEU-seq organoid (header, item 7)"
+  mt $DYN_PY "$CODE/91_labelling_velocity.py" "$L/organoid_small.h5ad" "$OUT/labelling_organoid" \
+    --recipe organoid_tutorial --time-scale 60 --embed-cols rotated_umap1,rotated_umap2 --jobs 8
 }
 
 # Section 6, held-out time point (Waddington-OT's validation routine; 3,000 cells per day, three
@@ -466,6 +469,12 @@ s_readout () {
   $PY -s "$CODE/116_readout_check.py" "$OUT" "$OUT/readout_check.csv"
 }
 
+# Section 5: the learned-model pipeline (OT-CFM, carry forward, 20-NN read-out) on simulated
+# snapshots, against the walk, the true-velocity kernel and a state classifier (119; one GPU).
+s_learned_control () {
+  gpu mt $OT_PY -s "$CODE/119_learned_control.py" "$OUT/learned_control119.csv" --device cuda:0
+}
+
 # Section 3.2: bootstrap p-values of the 48 gains and Holm's correction over them (118).
 s_multiplicity () {
   OMP_NUM_THREADS=1 $PY -s "$CODE/118_multiplicity.py" "$FALL" "$LAB" "$FCTM" "$FCTR" \
@@ -506,6 +515,7 @@ run_stage SCORE            "fate shares (51) and CellTag-multi scores (97)"     
 run_stage PUBLISHED_TEST   "published 335-cell LARRY test set (101)"              s_published_test
 run_stage FIG1             "Figure 2 (101b)"                                      s_fig1
 run_stage SIMULATION       "simulated positive control (98)"                      s_simulation
+run_stage LEARNED_CONTROL  "learned-model pipeline on simulated snapshots (119)"  s_learned_control
 run_stage TABLE_GAIN       "gain over the kernel, three data sets (99)"           s_table_gain
 run_stage FIG2             "Figure 3 (99b)"                                       s_fig2
 run_stage RESOLUTION       "minimum detectable differences (102)"                 s_resolution
